@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#a9dcff">
+  <title>훨훨 · FLUTTER FLIGHT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@500;700;900&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="scene" aria-label="새의 눈으로 하늘을 나는 1인칭 3D 화면"></canvas>
+<canvas id="hud"></canvas>
+<video id="cam" playsinline muted></video>
+
+<section class="screen show" id="title">
+  <div class="card">
+    <p class="kicker">BODY TRACKING · FIRST-PERSON FLIGHT</p>
+    <h1>훨훨</h1>
+    <p class="intro">내 몸이 새가 됩니다! 웹캠 앞에서 팔을 퍼덕여 날아오르고,<br>몸을 기울여 장애물 사이를 빠져나가세요.</p>
+    <div class="moves">
+      <div><span>🙌⬇️</span><b>퍼덕</b><em>팔을 들었다가 내려치면<br>위로 솟구쳐요</em></div>
+      <div><span>↙️ ↘️</span><b>기울이기</b><em>몸을 기울인 쪽으로<br>날아가요</em></div>
+      <div><span>🙆‍♂️</span><b>활공</b><em>팔을 양옆으로 쭉 펴면<br>천천히 내려가요</em></div>
+    </div>
+    <div class="btns">
+      <button id="btn-cam" class="primary">📷 카메라로 날기</button>
+      <button id="btn-key">⌨ 키보드로 날기</button>
+    </div>
+    <p id="status">카메라에서 2m쯤 떨어져 허리 위 상체와 두 팔이 다 보이게 서 주세요.</p>
+    <p class="note">키보드: Space/W 날갯짓 · A/D(←/→) 방향 · Shift 활공</p>
+  </div>
+</section>
+
+<section class="screen" id="over">
+  <div class="card">
+    <p class="kicker">GAME OVER</p>
+    <h2>깃털이 다 빠졌어요</h2>
+    <p id="over-score"></p>
+    <p id="over-detail"></p>
+    <div class="btns">
+      <button id="btn-again" class="primary">다시 날기</button>
+      <button id="btn-title">처음으로</button>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="pose.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
