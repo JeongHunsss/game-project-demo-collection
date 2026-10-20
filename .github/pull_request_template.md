@@ -15,6 +15,8 @@
 - [ ] 모든 스크립트 `node --check` 통과
 - [ ] 로직 시뮬레이션:
 - [ ] 헤드리스 Chrome 스크린샷 (`file://`, `http://localhost`)
+- [ ] 게임 `README.md`가 README 규칙(소개 · 실행 · 조작 · 규칙)을 따르고 실제 동작과 일치
+- [ ] 커밋 메시지가 Conventional Commits 형식
 
 ## 확인하지 못한 것
 
