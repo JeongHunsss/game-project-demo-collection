@@ -12,9 +12,9 @@
 
 ## 확인한 것
 
-- [ ] 모든 스크립트 `node --check` 통과
-- [ ] 로직 시뮬레이션:
-- [ ] 헤드리스 Chrome 스크린샷 (`file://`, `http://localhost`)
+- [ ] 로직 시뮬레이션 / 테스트:
+- [ ] (웹) 모든 스크립트 `node --check` 통과, 헤드리스 Chrome 스크린샷 (`file://`, `http://localhost`)
+- [ ] (그 밖의 플랫폼) README의 명령대로 빌드·실행 확인
 - [ ] 게임 `README.md`가 README 규칙(소개 · 실행 · 조작 · 규칙)을 따르고 실제 동작과 일치
 - [ ] 루트 `README.md`의 알맞은 카테고리에 게임 링크와 한 줄 소개를 등록
 - [ ] 커밋 메시지가 Conventional Commits 형식
