@@ -22,7 +22,7 @@ const ZONES = [
   { y: 20, name: '무너지는 절벽', tip: '금 간 홀드는 잡고 1.4초 뒤 무너져요. ▼ 표시가 뜨면 낙석을 피하세요!' },
   { y: 30, name: '폭포 벽', tip: '💧 젖은 홀드는 팔 힘이 두 배 넘게 빠져요. 보라 홀드는 좌우로 움직여요.' },
   { y: 40, name: '바람 능선', tip: '💨 돌풍이 불 땐 두 손으로 잡고 버티세요! 🌵 붉은 가시 홀드는 피하세요.' },
-  { y: 50, name: '다이노 갭', tip: '🚀 손이 안 닿는 간격은 두 손으로 잡은 상태에서 손을 확 펴며 위로 뻗어 점프!' },
+  { y: 50, name: '다이나믹 갭', tip: '🚀 손이 안 닿는 간격은 두 손으로 잡은 상태에서 손을 확 펴며 위로 뻗어 점프!' },
 ];
 const zoneAt = (y) => { let z = 0; ZONES.forEach((zz, i) => { if (y >= zz.y) z = i; }); return z; };
 
@@ -135,7 +135,7 @@ function buildCourse() {
     const y0 = zone * 10, y1 = y0 + 10;
     let y = zone === 0 ? 1.9 : y0 + 1.05;
     let k = 0;
-    // 다이노 구간은 가운데에 손이 닿지 않는 간격을 하나 둔다 (앞뒤로는 일반 홀드)
+    // 다이나믹 구간은 가운데에 손이 닿지 않는 간격을 하나 둔다 (앞뒤로는 일반 홀드)
     const gaps = zone === 5 ? [y0 + 4] : [];
     while (y < y1 - 0.6) {
       const type = pathType(zone, k);
@@ -334,7 +334,7 @@ function update(dt) {
   P.maxY = Math.max(P.maxY, P.y - LEG);
 }
 
-// 다이노: 두 손으로 잡고 있다가 거의 동시에 손을 펴면서 위로 뻗으면 튀어 오른다
+// 다이나믹: 두 손으로 잡고 있다가 거의 동시에 손을 펴면서 위로 뻗으면 튀어 오른다
 function checkDyno() {
   const [a, b] = P.hands;
   if (game.dynoLock > 0) return;
@@ -349,7 +349,7 @@ function checkDyno() {
   P.vx = clamp((a.rvx + b.rvx) / 4, -2, 2);
   P.supported = false;
   game.dynoLock = 0.8;
-  floater('다이노!', P.x, P.y + 1.2, '#7ee8ff');
+  floater('다이나믹!', P.x, P.y + 1.2, '#7ee8ff');
   sfx.dyno();
 }
 
@@ -1127,7 +1127,7 @@ window.addEventListener('mouseup', (e) => { if (e.button === 0) mouse.left = fal
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Shift') mouse.shift = true;
-  // 마우스 모드 다이노: 두 손으로 잡은 상태에서 Space
+  // 마우스 모드 다이나믹: 두 손으로 잡은 상태에서 Space
   if (e.code === 'Space' && game.screen === 'play') {
     e.preventDefault();
     if (P.hands.every((h) => h.hold)) {
