@@ -193,9 +193,18 @@ const game = {
 };
 const mouse = { x: W / 2, y: H / 2, left: false, right: false, shift: false };
 
-// 카메라 프레임 좌표(0~1) → 골반 기준 손 위치(m)
+// 카메라 프레임 좌표(0~1) → 골반 기준 손 위치(m).
+// 손이 화면 밖으로 나가면 인식이 끊기므로, 화면 위쪽 30% 지점(REACH_TOP_PY)만 올려도 팔이 끝까지 뻗고
+// 아래쪽 90% 지점(REACH_BOTTOM_PY)까지 내리면 끝까지 당기도록 높이를 넓게 대응시킨다.
+const REACH_TOP_PY = 0.3, REACH_BOTTOM_PY = 0.9;
+const REL_TOP = SHOULDER.dy + REACH + 0.05, REL_BOTTOM = -1.0;
+const X_GAIN = 3.6;
 function frameToRel(px, py) {
-  return { x: (px - 0.5) * 3.2, y: (0.62 - py) * 2.8 };
+  const t = (py - REACH_TOP_PY) / (REACH_BOTTOM_PY - REACH_TOP_PY);
+  return { x: (px - 0.5) * X_GAIN, y: REL_TOP + (REL_BOTTOM - REL_TOP) * t };
+}
+function relToFrame(rx, ry) {
+  return { px: rx / X_GAIN + 0.5, py: REACH_TOP_PY + (ry - REL_TOP) / (REL_BOTTOM - REL_TOP) * (REACH_BOTTOM_PY - REACH_TOP_PY) };
 }
 const shoulderOf = (i) => ({ x: P.x + (i ? SHOULDER.dx : -SHOULDER.dx), y: P.y + SHOULDER.dy });
 
@@ -1149,6 +1158,6 @@ requestAnimationFrame(frame);
 
 // 개발 확인용: ?debug 로 열면 상태를 보고 입력을 직접 넣을 수 있다
 if (/[?&]debug\b/.test(location.search)) {
-  window.__climb = { game, P, course: () => course, update, startGame, holdPos, frameToRel, shoulderOf, REACH, LEG, TOP };
+  window.__climb = { game, P, course: () => course, update, startGame, holdPos, frameToRel, relToFrame, shoulderOf, REACH, LEG, TOP };
 }
 })();
