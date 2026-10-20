@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07070c">
+  <title>마리오네트 펜싱 · PUPPET FENCING</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game" tabindex="0" aria-label="손가락으로 졸라맨을 조종하는 2인 펜싱 게임"></canvas>
+<video id="cam" playsinline muted></video>
+
+<section id="overlay">
+  <div class="panel">
+    <p class="kicker">PUPPET · FENCING · 2P</p>
+    <h1>마리오네트 펜싱</h1>
+    <p class="intro">웹캠 앞에 손을 하나씩 올리고, 손가락으로 졸라맨 검객을 조종하세요.<br>
+      카메라 화면 <b class="red">왼쪽 손 = P1 RED</b>, <b class="green">오른쪽 손 = P2 GREEN</b>.</p>
+
+    <div class="map">
+      <div><span>🖐 손바닥 좌우</span><em>앞뒤 이동</em></div>
+      <div><span>☝ 검지</span><em>방향 = 칼끝 조준 · 재빨리 펴기 = <b>찌르기</b></em></div>
+      <div><span>👍 엄지 접기</span><em><b>패리</b> — 0.35초간 막는 자세, 닿은 상대 칼을 튕겨냄 (재사용 0.9초)</em></div>
+      <div><span>🖖 중지·약지 펴기</span><em><b>런지</b> — 사거리가 크게 늘지만 발이 무거워짐</em></div>
+      <div><span>🤙 새끼 펴기</span><em><b>웅크리기</b> — 높은 찌르기를 피하지만 발이 무거워짐</em></div>
+    </div>
+    <p class="tip">기본 자세는 <b>엄지를 세운 손가락 총 모양</b>(검지로 상대를 겨누고 나머지는 접기). 걷기만 해서는 찌를 수 없어요 — 검지를 뻗거나 런지해야 득점합니다.</p>
+
+    <ul class="rules">
+      <li>에페 규칙: 전신이 유효면, <b>칼끝으로 찔러야</b> 득점</li>
+      <li>상대가 찌르기 직전에 엄지를 접으면 막아냄. 칼이 맞닿은 상태에서 접으면 상대 칼을 쳐내 <b>0.9초 공격 기회</b></li>
+      <li>동시에 찌르면 양쪽 1점 (매치 포인트에선 무효)</li>
+      <li>득점 후엔 각자 출발선 뒤로 물러나야 다시 시작 · <b>5점 선취</b> 승리</li>
+    </ul>
+
+    <div class="btns">
+      <button id="btn-cam" class="primary">📷 카메라 켜고 시작</button>
+      <button id="btn-kb">⌨ 키보드로 시작</button>
+    </div>
+    <p id="status" role="status">손이 인식되지 않는 선수는 자동으로 키보드 조작으로 전환됩니다.</p>
+  </div>
+</section>
+
+<script src="tracker.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

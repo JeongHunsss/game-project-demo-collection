@@ -1,0 +1,67 @@
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; height: 100%;
+  background: #040406;
+  color: #eee;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  overflow: hidden;
+}
+body { display: grid; place-items: center; }
+canvas { display: block; outline: none; }
+#cam { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+#overlay {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at center, rgba(20,10,14,0.82), rgba(0,0,0,0.94));
+  overflow-y: auto;
+}
+#overlay.hidden { display: none; }
+
+.panel {
+  width: min(680px, 100%);
+  padding: 32px 36px;
+  border: 2px solid #c9a24a;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1a0d12, #0b0b10);
+  box-shadow: 0 0 60px rgba(201,162,74,0.15);
+}
+.kicker { margin: 0; letter-spacing: 0.35em; font-size: 12px; color: #c9a24a; font-weight: 700; }
+h1 {
+  margin: 6px 0 10px;
+  font-family: "Black Han Sans", sans-serif; font-weight: 400;
+  font-size: clamp(40px, 7vw, 60px);
+  background: linear-gradient(90deg, #ff4d5e, #f4f5f8 50%, #35e08a);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.intro { margin: 0 0 18px; line-height: 1.6; color: #cfcfd6; }
+.red { color: #ff4d5e; }
+.green { color: #35e08a; }
+
+.map { display: grid; gap: 6px; margin-bottom: 12px; }
+.map div {
+  display: grid; grid-template-columns: 190px 1fr; gap: 12px; align-items: center;
+  padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.04);
+}
+.map span { font-weight: 700; color: #fff; }
+.map em { font-style: normal; color: #b9b9c4; font-size: 14px; }
+.tip { margin: 0 0 14px; font-size: 14px; color: #ffd36b; line-height: 1.5; }
+.rules { margin: 0 0 20px; padding-left: 18px; color: #b9b9c4; font-size: 14px; line-height: 1.7; }
+.rules b { color: #eee; }
+
+.btns { display: flex; gap: 10px; flex-wrap: wrap; }
+button {
+  font: 700 16px "Noto Sans KR", sans-serif;
+  padding: 12px 20px; border-radius: 12px; cursor: pointer;
+  border: 1.5px solid #c9a24a; background: transparent; color: #e8d5a5;
+}
+button.primary { background: #c9a24a; color: #140c08; }
+button:hover:not(:disabled) { filter: brightness(1.15); }
+button:disabled { opacity: 0.5; cursor: wait; }
+#status { margin: 14px 0 0; min-height: 1.4em; font-size: 13px; color: #9a9aa6; }
+
+@media (max-width: 560px) {
+  .panel { padding: 22px 18px; }
+  .map div { grid-template-columns: 1fr; gap: 2px; }
+}
