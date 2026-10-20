@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#bfe6ff">
+  <title>외쳐라, 방진대! · SHOUT PHALANX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@500;700;900&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="scene" aria-label="목소리로 창방패 부대를 지휘하는 3D 전투 화면"></canvas>
+
+<!-- 플레이 중 HUD -->
+<div id="hud">
+  <div id="top-left">
+    <div id="stage-name"></div>
+    <div id="progress"><i id="progress-fill"></i></div>
+    <div id="wave"></div>
+  </div>
+  <div id="top-right">
+    <div id="troops"></div>
+    <div id="state"></div>
+  </div>
+  <div id="hint"></div>
+  <div id="boss"><span>거인 대장 볼그</span><div><i id="boss-fill"></i></div></div>
+  <div id="stage-tip"></div>
+  <div id="intro"></div>
+  <div id="bubble"></div>
+  <div id="floaters"></div>
+  <div id="bottom">
+    <button id="mic" data-state="off" title="마이크 켜기/끄기"><i class="dot"></i><span id="mic-label">마이크 꺼짐</span></button>
+    <div id="heard-box"><span id="heard-cmd"></span><span id="heard">명령을 외쳐 보세요</span></div>
+    <div id="commands"></div>
+  </div>
+</div>
+
+<section class="screen show" id="title">
+  <div class="card">
+    <p class="kicker">VOICE · PHALANX · PVE</p>
+    <h1>외쳐라,<br>방진대!</h1>
+    <p class="intro">창과 방패를 든 귀여운 병사 12명이 당신의 목소리만 기다립니다.<br>마이크에 대고 외쳐서 방진을 지휘하세요!</p>
+    <div class="examples">
+      <span>“전진!”</span><span>“방패!”</span><span>“공격!”</span><span>“투창!”</span><span>“스파르타!”</span>
+    </div>
+    <div class="btns">
+      <button id="btn-start" class="primary">출정하기</button>
+      <button id="btn-mic-test">🎙 마이크 테스트</button>
+    </div>
+    <p id="title-mic"></p>
+    <p class="note">Chrome/Edge의 한국어 음성 인식을 씁니다(인터넷 필요). 마이크가 없으면 키보드나 화면 버튼으로도 지휘할 수 있어요.</p>
+  </div>
+</section>
+
+<section class="screen" id="select">
+  <div class="card wide">
+    <h2>출정할 전장</h2>
+    <div id="stage-list"></div>
+    <div class="cheat">
+      <b>명령어</b>
+      전진(W) · 후퇴(S) · 정지(X) · 왼쪽(A) · 오른쪽(D) · 공격(E) · 방패(Q) · 산개(Z) · 모여(C) · 투창(F) · 돌격(R) · 스파르타(G)
+    </div>
+    <button id="btn-back-title" class="ghost">← 처음으로</button>
+  </div>
+</section>
+
+<section class="screen" id="pause">
+  <div class="card">
+    <h2>잠시 멈춤</h2>
+    <div class="btns">
+      <button id="btn-resume" class="primary">계속하기</button>
+      <button id="btn-pause-select">전장 선택</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="result">
+  <div class="card">
+    <h2 id="result-title"></h2>
+    <div id="result-stars"></div>
+    <p id="result-text"></p>
+    <div class="btns">
+      <button id="btn-next" class="primary">다음 전장</button>
+      <button id="btn-retry">다시 하기</button>
+      <button id="btn-select">전장 선택</button>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="voice.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

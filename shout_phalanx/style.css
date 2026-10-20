@@ -1,0 +1,157 @@
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: #bfe6ff;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  color: #3a2a1c;
+}
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ── HUD ── */
+#hud { position: fixed; inset: 0; pointer-events: none; display: none; }
+body.playing #hud { display: block; }
+#hud button { pointer-events: auto; }
+
+#top-left, #top-right {
+  position: absolute; top: 14px;
+  background: rgba(255, 250, 238, 0.88); border: 3px solid #6b4a2b; border-radius: 16px;
+  padding: 10px 14px; box-shadow: 0 4px 0 rgba(107, 74, 43, 0.35);
+}
+#top-left { left: 14px; width: min(320px, 44vw); }
+#top-right { right: 14px; text-align: right; }
+#stage-name { font: 22px "Jua", sans-serif; color: #b8232c; }
+#progress { height: 10px; margin: 6px 0 4px; background: #ead9b8; border-radius: 6px; overflow: hidden; }
+#progress-fill { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #e2483f, #ffb03b); }
+#wave { font-size: 13px; font-weight: 700; }
+#troops { font: 26px "Jua", sans-serif; }
+#state { font-size: 14px; font-weight: 700; }
+#state b { color: #e2483f; }
+#state .buff { color: #d88a00; }
+
+#hint {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  padding: 8px 18px; border-radius: 999px;
+  font: 22px "Jua", sans-serif; color: #fff;
+  background: rgba(58, 42, 28, 0.78); transition: opacity 0.2s;
+  white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis;
+}
+#hint.danger { background: #e2483f; animation: pulse 0.6s infinite alternate; }
+@keyframes pulse { to { transform: translateX(-50%) scale(1.06); } }
+
+#boss { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); width: min(420px, 70vw); text-align: center; font: 18px "Jua", sans-serif; color: #8e2c4f; }
+#boss div { height: 14px; background: rgba(0, 0, 0, 0.25); border: 2px solid #8e2c4f; border-radius: 8px; overflow: hidden; }
+#boss-fill { display: block; height: 100%; background: linear-gradient(90deg, #c9305f, #ff7aa0); }
+
+#stage-tip {
+  position: absolute; left: 14px; top: 118px; max-width: min(320px, 44vw);
+  font-size: 13px; font-weight: 700; color: #3a2a1c;
+  background: rgba(255, 250, 238, 0.75); border-radius: 10px; padding: 6px 10px;
+}
+#intro {
+  position: absolute; top: 24%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center; opacity: 0; color: #fff; text-shadow: 0 3px 0 #6b4a2b, 0 0 18px rgba(0, 0, 0, 0.35);
+}
+#intro.show { animation: intro 3.2s ease forwards; }
+#intro small { display: block; font: 20px "Jua", sans-serif; letter-spacing: 0.2em; }
+#intro b { display: block; font: 64px "Jua", sans-serif; }
+#intro span { display: block; font-size: 18px; font-weight: 700; margin-top: 6px; }
+@keyframes intro { 0% { opacity: 0; transform: translate(-50%, -40%); } 12%, 75% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; } }
+
+#bubble {
+  position: absolute; left: 0; top: 0; opacity: 0;
+  background: #fff; border: 3px solid #3a2a1c; border-radius: 16px;
+  padding: 4px 14px; font: 26px "Jua", sans-serif; white-space: nowrap;
+}
+#bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -12px; transform: translateX(-50%);
+  border: 8px solid transparent; border-top-color: #3a2a1c;
+}
+.floater { position: absolute; left: 0; top: 0; font: 26px "Jua", sans-serif; text-shadow: 0 2px 0 #3a2a1c, 0 0 6px #3a2a1c; white-space: nowrap; }
+
+#bottom {
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
+  width: min(980px, calc(100vw - 24px));
+  display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center;
+}
+#mic {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 999px; border: 3px solid #6b4a2b;
+  background: #fffaee; font: 700 14px "Noto Sans KR", sans-serif; cursor: pointer;
+}
+#mic .dot { width: 12px; height: 12px; border-radius: 50%; background: #aaa; }
+#mic[data-state="listening"] .dot { background: #e2483f; animation: blink 1s infinite; }
+#mic[data-state="denied"] .dot, #mic[data-state="error"] .dot, #mic[data-state="unsupported"] .dot { background: #333; }
+@keyframes blink { 50% { opacity: 0.3; } }
+#heard-box {
+  padding: 8px 14px; border-radius: 999px; background: rgba(58, 42, 28, 0.78); color: #fff;
+  font-size: 15px; font-weight: 700; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+#heard-cmd { color: #ffd34d; margin-right: 10px; }
+#heard.interim { opacity: 0.6; }
+#commands { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+.cmd {
+  position: relative; overflow: hidden;
+  padding: 8px 2px 6px; border-radius: 12px; border: 3px solid #6b4a2b;
+  background: #fffaee; color: #3a2a1c; cursor: pointer;
+  box-shadow: 0 3px 0 #6b4a2b;
+}
+.cmd .say { display: block; font: 17px "Jua", sans-serif; }
+.cmd kbd { font: 700 11px "Noto Sans KR", sans-serif; opacity: 0.6; }
+.cmd .cd { position: absolute; inset: 0; background: rgba(58, 42, 28, 0.55); transform-origin: bottom; transform: scaleY(var(--cd, 0)); }
+.cmd.active { background: #ffe08a; }
+.cmd.ok { animation: ok 0.4s; }
+.cmd.no { animation: no 0.35s; }
+@keyframes ok { 30% { transform: translateY(-6px) scale(1.08); background: #ffd34d; } }
+@keyframes no { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* ── 메뉴 화면 ── */
+.screen { position: fixed; inset: 0; display: none; place-items: center; padding: 16px; background: rgba(70, 120, 160, 0.25); overflow-y: auto; }
+.screen.show { display: grid; }
+.card {
+  width: min(560px, 100%); padding: 28px 30px; text-align: center;
+  background: #fffaee; border: 4px solid #6b4a2b; border-radius: 26px;
+  box-shadow: 0 8px 0 #6b4a2b, 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+.card.wide { width: min(760px, 100%); }
+.kicker { margin: 0; letter-spacing: 0.3em; font-size: 12px; font-weight: 900; color: #b8232c; }
+h1 { margin: 6px 0 10px; font: 64px/1.05 "Jua", sans-serif; color: #e2483f; text-shadow: 0 4px 0 #6b4a2b; }
+h2 { margin: 0 0 14px; font: 40px "Jua", sans-serif; color: #b8232c; }
+h2.win { color: #e2a400; }
+h2.lose { color: #6b4a2b; }
+.intro { line-height: 1.6; font-weight: 700; margin: 0 0 14px; }
+.examples { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 18px; }
+.examples span { background: #ffe08a; border-radius: 999px; padding: 4px 12px; font: 18px "Jua", sans-serif; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+button { font: 20px "Jua", sans-serif; }
+.btns button, .ghost {
+  padding: 10px 22px; border-radius: 16px; border: 3px solid #6b4a2b; cursor: pointer;
+  background: #fff; color: #3a2a1c; box-shadow: 0 4px 0 #6b4a2b;
+}
+.btns button.primary { background: #e2483f; color: #fff; }
+.btns button:active, .ghost:active { transform: translateY(3px); box-shadow: 0 1px 0 #6b4a2b; }
+.ghost { margin-top: 16px; font-size: 16px; }
+#title-mic { min-height: 1.4em; font-weight: 700; color: #2f8a3a; margin: 14px 0 4px; }
+.note { font-size: 13px; color: #7a6a5a; margin: 0; }
+
+#stage-list { display: grid; gap: 10px; }
+.stage {
+  display: grid; grid-template-columns: 48px 1fr auto; grid-template-rows: auto auto; column-gap: 12px; align-items: center;
+  text-align: left; padding: 10px 16px; border-radius: 16px; border: 3px solid #6b4a2b; background: #fff;
+  cursor: pointer; box-shadow: 0 4px 0 #6b4a2b;
+}
+.stage b { grid-row: 1 / 3; font: 34px "Jua", sans-serif; color: #e2483f; text-align: center; }
+.stage .nm { font: 22px "Jua", sans-serif; }
+.stage .ds { grid-column: 2; font: 700 13px "Noto Sans KR", sans-serif; color: #7a6a5a; }
+.stage .st { grid-row: 1 / 3; grid-column: 3; font-size: 22px; color: #e2a400; }
+.stage.locked { opacity: 0.5; cursor: not-allowed; }
+.cheat { margin-top: 16px; font-size: 13px; font-weight: 700; line-height: 1.7; color: #6b4a2b; background: #f6ead2; border-radius: 12px; padding: 10px; }
+.cheat b { display: block; font: 16px "Jua", sans-serif; }
+#result-stars { font-size: 48px; color: #e2a400; letter-spacing: 6px; }
+#result-text { font-weight: 700; }
+
+@media (max-width: 760px) {
+  #commands { grid-template-columns: repeat(6, 1fr); }
+  #stage-tip { display: none; }
+  #hint { font-size: 16px; top: 120px; }
+  h1 { font-size: 48px; }
+}
